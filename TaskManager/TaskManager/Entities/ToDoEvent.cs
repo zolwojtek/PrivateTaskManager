@@ -7,7 +7,7 @@ namespace TaskManager.Entities
     /// <summary>
     ///     Represents an event of drawing and completion of a task.
     /// </summary>
-    public class ToDoEvent
+    public class ToDoEvent : Entity
     {
         /// <summary>
         ///     Task event refers to.

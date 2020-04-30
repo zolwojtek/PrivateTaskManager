@@ -7,7 +7,7 @@ namespace TaskManager.Entities
     /// <summary>
     ///     Generic to-do task defined by a user. 
     /// </summary>
-    public class Task
+    public class Task : Entity
     {
         /// <summary>
         ///     Description of the task.
