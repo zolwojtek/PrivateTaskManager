@@ -2,7 +2,7 @@
 
 namespace TaskManager
 {
-    public class Class1
+    public static class TaskManger
     {
     }
 }

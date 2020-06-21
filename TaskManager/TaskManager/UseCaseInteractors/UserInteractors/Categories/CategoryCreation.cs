@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskManager.Entities;
 
 namespace TaskManager.UseCaseInteractors.UserInteractors
 {
-    class CategoryCreation
+    public static class CategoryCreation
     {
+        public static TaskCategory CreateCategory(string categoryName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
