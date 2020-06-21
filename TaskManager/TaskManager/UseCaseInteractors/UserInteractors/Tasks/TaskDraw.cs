@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TaskManager.UseCaseInteractors.UserInteractors
 {
-    class AddCategory
+    class TaskDraw
     {
     }
 }

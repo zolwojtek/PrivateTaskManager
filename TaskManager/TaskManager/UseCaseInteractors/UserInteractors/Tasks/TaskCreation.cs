@@ -4,7 +4,9 @@ using System.Text;
 
 namespace TaskManager.UseCaseInteractors.UserInteractors
 {
-    class GetCategoryTasks
+    public static class TaskCreation
     {
+
+
     }
 }
