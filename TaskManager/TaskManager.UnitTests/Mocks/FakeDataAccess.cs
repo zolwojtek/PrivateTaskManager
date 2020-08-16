@@ -14,9 +14,16 @@ namespace TaskManager.UnitTests.Mocks
             new TaskCategory { Name = "Existing Category"}
         };
 
-        public void Delete<T>(T entity) where T : Entity
+        public void Delete<T>(T element) where T : Entity
         {
-            throw new NotImplementedException();
+            switch (element)
+            {
+                case TaskCategory tc:
+                    _categories.Remove(tc);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public bool DoesElementExist<T>(T element) where T : Entity

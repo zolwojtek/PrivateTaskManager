@@ -17,7 +17,7 @@ namespace TaskManager.UseCaseInteractors.UserInteractors
 
         public TaskCategory CreateCategory(string categoryName)
         {
-            TaskCategory category = new TaskCategory() { Name = categoryName };
+            var category = new TaskCategory() { Name = categoryName };
 
             if(_dataGateway.DoesElementExist(category))
                 throw new ArgumentException($"Category with name {categoryName} already exists.");
