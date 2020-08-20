@@ -93,6 +93,56 @@ namespace TaskManager.UnitTests
 
         }
 
+        [Test]
+        public void EditCategory_ChangeCategoryNameWithLegalSigns_IsSuccessful()
+        {
+            using var mock = AutoMock.GetLoose();
+            var category = new TaskCategory() { Name = "New legal name" };
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.DoesElementExist(category))
+                .Returns(true);
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.Update(category));
+
+            var cls = mock.Create<CategoryEdit>();
+            cls.UpdateCategory(category);
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.Update(category), Times.Exactly(1));
+        }
+
+        [Test]
+        public void EditCategory_ChangeCategoryNameWithIllegalSigns_ThrowsException()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void FetchCategories_NoCategoriesCreated_ReturnEmptyEnumerable()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void FetchCategories_FewCategoriesCreated_ReturnCorrrectCategories()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void FetchCategoryTasks_NoTasksCreated_ReturnEmptyEnumerable()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void FetchCategoryTasks_FewTasksCreated_ReturnCorrectTasks()
+        {
+            Assert.Fail();
+        }
+
+
         private List<TaskCategory> GetSampleCategories()
         {
             return new List<TaskCategory>() { 
