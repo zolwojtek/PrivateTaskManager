@@ -9,12 +9,17 @@ namespace TaskManager.DataAccess
     {
         #region Read
         /// <summary>
-        ///     Reads collection of given Entity type from data storage.
+        ///     Reads task categories from data storage.
         /// </summary>
-        /// <typeparam name="T"> Type derriving from Entity class.  </typeparam>
-        /// <returns> All entities with given type found in the storage. </returns>
-        IEnumerable<T> ReadCollection<T>() where T : Entity;  
-        
+        /// <returns> Task categories found in the storage. </returns>
+        IEnumerable<TaskCategory> ReadCategories();
+
+        /// <summary>
+        ///     Reads tasks for a given task category.
+        /// </summary>
+        /// <returns> All tasks for the given category found in the storage. </returns>
+        IEnumerable<Task> ReadTasks(TaskCategory category);
+
         /// <summary>
         ///     Reads application setting.
         /// </summary>

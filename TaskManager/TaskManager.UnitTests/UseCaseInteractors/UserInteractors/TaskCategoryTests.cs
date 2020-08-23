@@ -9,6 +9,8 @@ using FluentAssertions;
 using Autofac.Extras.Moq;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.WebSockets;
 
 namespace TaskManager.UnitTests
 {
@@ -113,33 +115,123 @@ namespace TaskManager.UnitTests
         }
 
         [Test]
-        public void EditCategory_ChangeCategoryNameWithIllegalSigns_ThrowsException()
+        public void EditCategory_ChangeCategoryNameWithIllegalSigns_ThrowException()
         {
-            Assert.Fail();
+            using var mock = AutoMock.GetLoose();
+            var category = new TaskCategory() { Name = "i!!egal n@ame" };
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.DoesElementExist(category))
+                .Returns(true);
+
+            var cls = mock.Create<CategoryEdit>();
+            Action action = () => cls.UpdateCategory(category);
+            
+            action.Should().Throw<InvalidOperationException>();
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.Update(category), Times.Exactly(0));
         }
 
         [Test]
         public void FetchCategories_NoCategoriesCreated_ReturnEmptyEnumerable()
         {
-            Assert.Fail();
+            using var mock = AutoMock.GetLoose();
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.ReadCategories())
+                .Returns(Enumerable.Empty<TaskCategory>());
+
+            var cls = mock.Create<CategoryListFetch>();
+            IEnumerable<TaskCategory> categories = cls.FetchCategories();
+
+            categories.Count().Should().Be(0);
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.ReadCategories(), Times.Exactly(1));
         }
 
         [Test]
         public void FetchCategories_FewCategoriesCreated_ReturnCorrrectCategories()
         {
-            Assert.Fail();
+            using var mock = AutoMock.GetLoose();
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.ReadCategories())
+                .Returns(this.GetSampleCategories());
+
+            var cls = mock.Create<CategoryListFetch>();
+            IEnumerable<TaskCategory> categories = cls.FetchCategories();
+
+            categories.Count().Should().Be(this.GetSampleCategories().Count);
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.ReadCategories(), Times.Exactly(1));
+
         }
 
         [Test]
         public void FetchCategoryTasks_NoTasksCreated_ReturnEmptyEnumerable()
         {
-            Assert.Fail();
+            using var mock = AutoMock.GetLoose();
+            var category = new TaskCategory() { Name = "Existing category" };
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.ReadTasks(category))
+                .Returns(Enumerable.Empty<Task>());
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.DoesElementExist(category))
+                .Returns(true);
+
+            var cls = mock.Create<CategoryTasksFetch>();
+            IEnumerable<Task> tasks = cls.FetchTasks(category);
+
+            tasks.Count().Should().Be(0);
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.ReadTasks(category), Times.Exactly(1));
+        }
+
+        [Test]
+        public void FetchCategoryTasks_CategoryDoesNotExist_ThrowException()
+        {
+            using var mock = AutoMock.GetLoose();
+            var category = new TaskCategory() { Name = "Not Existing category" };
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.DoesElementExist(category))
+                .Returns(false);
+
+            var cls = mock.Create<CategoryTasksFetch>();
+            Action action = () => cls.FetchTasks(category);
+
+            action.Should().Throw<InvalidOperationException>();
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.ReadTasks(category), Times.Exactly(0));
         }
 
         [Test]
         public void FetchCategoryTasks_FewTasksCreated_ReturnCorrectTasks()
         {
-            Assert.Fail();
+            using var mock = AutoMock.GetLoose();
+            var category = new TaskCategory() { Name = "Existing category" };
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.ReadTasks(category))
+                .Returns(this.GetSampleTasks());
+
+            mock.Mock<IDataGateway>()
+                .Setup(x => x.DoesElementExist(category))
+                .Returns(true);
+
+            var cls = mock.Create<CategoryTasksFetch>();
+            IEnumerable<Task> tasks = cls.FetchTasks(category);
+
+            tasks.Count().Should().Be(this.GetSampleTasks().Count);
+
+            mock.Mock<IDataGateway>()
+                .Verify(x => x.ReadTasks(category), Times.Exactly(1));
         }
 
 
@@ -147,7 +239,16 @@ namespace TaskManager.UnitTests
         {
             return new List<TaskCategory>() { 
                 new TaskCategory { Name = "Existing category" }, 
-                new TaskCategory { Name = "Another category" } 
+                new TaskCategory { Name = "Another category" }
+            };
+        }
+
+        private List<Task> GetSampleTasks()
+        {
+            return new List<Task>()
+            {
+                new Task(),
+                new Task()
             };
         }
     }

@@ -48,7 +48,17 @@ namespace TaskManager.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
+        public IEnumerable<TaskCategory> ReadCategories()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<T> ReadCollection<T>() where T : Entity
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Task> ReadTasks(TaskCategory category)
         {
             throw new NotImplementedException();
         }

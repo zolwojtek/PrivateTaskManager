@@ -14,6 +14,8 @@ namespace TaskManager.Entities
         /// </summary>
         public string Name { get; set; }
 
+        public IEnumerable<Task> Tasks { get; } = new List<Task>();
+
         public bool Equals(TaskCategory other)
         {
             return other?.Name.Equals(this.Name) ?? false;
