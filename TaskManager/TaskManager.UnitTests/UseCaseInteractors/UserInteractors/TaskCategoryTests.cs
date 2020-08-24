@@ -18,7 +18,7 @@ namespace TaskManager.UnitTests
     {
 
         [Test]
-        public void CreateCategory_WholeNewCategory_ReturnNewCategory()
+        public void CreateCategory_WholeNewCategory_ReturnNewTaskCategory()
         {
             using var mock = AutoMock.GetLoose();
             string categoryName = "New Category";
@@ -34,6 +34,7 @@ namespace TaskManager.UnitTests
 
             mock.Mock<IDataGateway>()
                 .Verify(x => x.Write(It.IsNotNull<TaskCategory>()), Times.Exactly(1));
+
             category.Should().NotBeNull();
             category.Name.Should().Be(categoryName);
 
@@ -58,7 +59,7 @@ namespace TaskManager.UnitTests
 
 
         [Test]
-        public void DeleteCategory_DeleteExistingCategory_Ret()
+        public void DeleteCategory_DeleteExistingCategory_CategoryDeleted()
         {
             using var mock = AutoMock.GetLoose();
             var category = new TaskCategory() { Name = "Existing Category" };
@@ -76,7 +77,7 @@ namespace TaskManager.UnitTests
         }
 
         [Test]
-        public void DeleteCategory_DeleteNotExistingCategory_Ret()
+        public void DeleteCategory_DeleteNotExistingCategory_ThrowException()
         {
             using var mock = AutoMock.GetLoose();
             var category = new TaskCategory() { Name = "New Category" };

@@ -10,6 +10,10 @@ namespace TaskManager.Entities
     public class Task : Entity
     {
         /// <summary>
+        ///     Name of the task.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
         ///     Description of the task.
         /// </summary>
         public string Description { get; set; }

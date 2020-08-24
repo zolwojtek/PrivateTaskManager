@@ -20,7 +20,7 @@ namespace TaskManager.UseCaseInteractors.UserInteractors
             var category = new TaskCategory() { Name = categoryName };
 
             if(_dataGateway.DoesElementExist(category))
-                throw new ArgumentException($"Category with name {categoryName} already exists.");
+                throw new ArgumentException($"Category with name: {categoryName} already exists.");
             else
                 _dataGateway.Write(category);
 
